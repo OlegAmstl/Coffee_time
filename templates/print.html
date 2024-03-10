@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Спасибо за ваш заказ, {{ name }}!</h1>
+<p>Напиток: <strong>{{ new_order["drink"] }}</strong></p>
+<p>Вкус: <strong>{{ new_order["flavor"] }}</strong></p>
+<p>Топинг: <strong>{{ new_order["topping"] }}</strong></p>
+
+<form action="/order">
+    <input type="submit" value="Новый заказ">
+</form>
+{% endblock %}

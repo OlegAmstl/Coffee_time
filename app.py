@@ -21,6 +21,21 @@ def load_orders(filename):
         return orders
 
 
+def read_menu(filename):
+    f = open(filename)
+    temp = f.readlines()
+    result = []
+    for item in temp:
+        new_item = item.strip()
+        result.append(new_item)
+
+    return result
+
+
+drinks = read_menu("drinks.txt")
+flavors = read_menu("flavors.txt")
+toppings = read_menu("toppings.txt")
+
 orders = load_orders('orders.json')
 app = Flask(__name__)
 
@@ -47,7 +62,10 @@ def order():
         save_orders(orders, 'orders.json')
         return render_template('print.html',
                                new_order=new_order)
-    return render_template('forms.html')
+    return render_template('order.html',
+                           drinks=drinks,
+                           flavors=flavors,
+                           toppings=toppings)
 
 
 if __name__ == '__main__':

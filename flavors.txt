@@ -1,0 +1,6 @@
+caramel
+vanilla
+peppermint
+raspberry
+plain
+lemon

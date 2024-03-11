@@ -1,24 +1,18 @@
 from flask import Flask, render_template, request
 import json
 import os
+import sqlite3
 
 
-def save_orders(orders, filename):
-    f = open(filename, "w")
-    json.dump(orders, f, indent=4)
-    f.close()
+def save_order(order):
+    con = sqlite3.connect('orders.db')
+    cur = con.cursor()
+    cur.execute(
+        "INSERT INTO orders (name, drink, flavor, topping) VALUES (?, ?, ?, ?);",
+        (order['name'], order['drink'], order['flavor'], order['topping'])
+    )
+    con.commit()
     return
-
-
-def load_orders(filename):
-    if os.path.exists(filename):
-        f = open(filename, "r")
-        orders = json.load(f)
-        f.close()
-        return orders
-    else:
-        orders = []
-        return orders
 
 
 def read_menu(filename):
@@ -36,7 +30,12 @@ drinks = read_menu("drinks.txt")
 flavors = read_menu("flavors.txt")
 toppings = read_menu("toppings.txt")
 
-orders = load_orders('orders.json')
+con = sqlite3.connect('orders.db')
+cur = con.cursor()
+cur.execute(
+    'CREATE TABLE IF NOT EXIST orders (name, drink, flavor, topping);'
+)
+
 app = Flask(__name__)
 
 
@@ -58,8 +57,7 @@ def order():
             "drink": request.form['drink'],
             "flavor": request.form['flavor'],
             "topping": request.form['topping']}
-        orders.append(new_order)
-        save_orders(orders, 'orders.json')
+        save_order(new_order)
         return render_template('print.html',
                                new_order=new_order)
     return render_template('order.html',

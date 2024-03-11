@@ -15,6 +15,15 @@ def save_order(order):
     return
 
 
+def get_orders():
+    con = sqlite3.connect('orders.db')
+    con.row_factory = sqlite3.Row
+    cur = con.cursor()
+    cur.execute("SELECT * FROM orders;")
+    rows = cur.fetchall()
+    return rows
+
+
 def read_menu(filename):
     f = open(filename)
     temp = f.readlines()
@@ -64,6 +73,13 @@ def order():
                            drinks=drinks,
                            flavors=flavors,
                            toppings=toppings)
+
+
+@app.route('/list', methods=['GET'])
+def list():
+    orders = get_orders()
+    return render_template('list.html',
+                           orders=orders)
 
 
 if __name__ == '__main__':

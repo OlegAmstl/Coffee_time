@@ -1,0 +1,9 @@
+h1 {
+    font-family: "Playfair Display", serif;
+}
+body {
+    background-color: #8ed9b7;
+}
+input[type="text"], select {
+    background-color: #ede9df;
+}
